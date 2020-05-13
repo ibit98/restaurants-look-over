@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{Suspense} from 'react';
 import './App.css';
+import Navbars from './Navbars'
+import Review from './Review'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+class App extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state =({
+      resID : '',
+      reviewToggle : false
+    })
+  }
+
+  stateHandler = (ID)=> {
+    this.setState({
+      resID : ID
+    })
+  }
+
+  containHandler = () => {
+    this.setState({
+      reviewToggle : true
+    })
+  }
+
+  render() {
+    return (<div className="App">
+       <Navbars resMethod = {this.stateHandler} reviewMethod = {this.containHandler}/>
+       <div >
+      { this.state.resID &&(
+        <Suspense fallback={<div>Loading...</div>}>
+          <Review resID = {this.state.resID}/>
+        </Suspense>
+      )}
     </div>
-  );
+    </div>);
+  }
 }
 
 export default App;
